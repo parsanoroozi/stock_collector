@@ -23,6 +23,10 @@ public class ClosingPriceDaily {
         return dEven;
     }
 
+    public int getzTotTran() {
+        return zTotTran;
+    }
+
     @Override
     public String toString() {
         return "ClosingPriceDaily{" +

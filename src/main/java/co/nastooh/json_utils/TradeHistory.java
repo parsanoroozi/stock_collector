@@ -13,7 +13,7 @@ public class TradeHistory {
     private int hEven;
     private int dEven;
     private int pPhSeaCotJ;
-    private int qTitTran;
+    private long qTitTran;
 
 
     @Override
