@@ -2,6 +2,7 @@ package co.nastooh.playground;
 
 import co.nastooh.json_utils.ClosingPriceDaily;
 import co.nastooh.json_utils.TradeHistory;
+import co.nastooh.tables.Stock;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -10,9 +11,12 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Float.parseFloat;
+import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
+
 public class FindAllCount {
     public static void main(){
-
 
 
         System.setProperty("http.proxyhost", "127.0.0.1");
@@ -26,9 +30,6 @@ public class FindAllCount {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-
         String[] data = StockListRes.split("@")[2].split(";");
         String StockID = null;
         String findDaysURL = "http://cdn.tsetmc.com/api/ClosingPrice/GetClosingPriceDailyList/"+StockID+"/100000";
@@ -39,6 +40,29 @@ public class FindAllCount {
         long StocksRecordsCount;
         long TotalRecordsCount = 0;
         int stocksNumber = 0;
+        for(String item : data){
+            Stock stock = new Stock();
+            // filling stock fields:
+            stock.setId(item.split(",")[0]);
+            stock.setIsin(item.split(",")[1]);
+            stock.setStock_name(item.split(",")[2]);
+            stock.setCompany_name(item.split(",")[3]);
+            stock.setLast_update(parseInt(item.split(",")[4]));
+            stock.setFirst_price(parseFloat(item.split(",")[5]));
+            stock.setLast_price(parseFloat(item.split(",")[6]));
+            stock.setTransaction_price(parseFloat(item.split(",")[7]));
+            stock.setTransaction_count(parseLong(item.split(",")[8]));
+            stock.setTransaction_volume(parseLong(item.split(",")[9]));
+            stock.setTransaction_value(parseLong(item.split(",")[10]));
+            stock.setDay_min_price(parseFloat(item.split(",")[11]));
+            stock.setDay_max_price(parseFloat(item.split(",")[12]));
+            stock.setYesterday_price(parseFloat(item.split(",")[13]));
+            stock.setBase_volume(parseLong(item.split(",")[15]));
+            stock.setMax_allowed_price(parseFloat(item.split(",")[19]));
+            stock.setMin_allowed_price(parseFloat(item.split(",")[20]));
+            stock.setStock_count(parseLong(item.split(",")[21]));
+            System.out.println(stock);
+        }
 
 
         for (String item : data){
@@ -78,7 +102,7 @@ public class FindAllCount {
                 if (dayObj.getzTotTran() == 0) continue;
                 System.out.println(dayObj);
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(5);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -118,45 +142,6 @@ public class FindAllCount {
 
         }
         System.out.println("stocks count: " + data.length);
-
-        // getting days:
-//        String StockID = "33854964748757477";
-//        String findDaysURL = "http://cdn.tsetmc.com/api/ClosingPrice/GetClosingPriceDailyList/"+StockID+"/100000";
-//        String findDays = null;
-//        try {
-//            findDays = Jsoup.connect(findDaysURL)
-//                    .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
-//                    .ignoreContentType(true).get().text();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        JSONObject findDaysJson = new JSONObject(findDays);
-//        String closingPriceString = findDaysJson.get("closingPriceDaily").toString();
-//        Gson gson = new Gson();
-//        ClosingPriceDaily[] closingPriceDailyArray = gson.fromJson(closingPriceString, ClosingPriceDaily[].class);
-//        for (ClosingPriceDaily obj : closingPriceDailyArray){
-//            System.out.println(obj);
-//        }
-//        System.out.println(closingPriceDailyArray.length);
-//
-//        // getting trades:
-////        String TradesDate = Integer.toString(closingPriceDailyArray[1].getdEven());
-////        String findTradesURL = "http://cdn.tsetmc.com/api/Trade/GetTradeHistory/"+StockID+"/"+TradesDate+"/false";
-////        String findTrades = null;
-//        try {
-//            findTrades = Jsoup.connect(findTradesURL)
-//                    .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
-//                    .ignoreContentType(true).get().text();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        JSONObject findTradesJson = new JSONObject(findTrades);
-//        String tradeHistoryString = findTradesJson.get("tradeHistory").toString();
-//        TradeHistory[] TradeHistoryArray = gson.fromJson(tradeHistoryString, TradeHistory[].class);
-//        for (TradeHistory obj : TradeHistoryArray){
-//            System.out.println(obj);
-//        }
-//        System.out.println(TradeHistoryArray.length);
 
     }
 }

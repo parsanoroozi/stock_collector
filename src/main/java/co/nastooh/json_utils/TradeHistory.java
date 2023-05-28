@@ -1,5 +1,8 @@
 package co.nastooh.json_utils;
 
+import javax.persistence.Entity;
+
+
 public class TradeHistory {
     private int pPbSeaCotJ;
     private String insCode;
