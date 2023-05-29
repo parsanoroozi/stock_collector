@@ -2,6 +2,11 @@ package co.nastooh.crawlers;
 
 import co.nastooh.tables.Stock;
 import org.jsoup.Jsoup;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -12,30 +17,17 @@ import static java.lang.Long.parseLong;
 public class StocksCrawler {
     public static ArrayList<Stock> collectStocks(){
 
-        // setting proxy:
-        System.setProperty("http.proxyhost", "127.0.0.1");
-        System.setProperty("http.proxyport", "3128");
-
         // fetching stocks:
-        String stocksApiRes = null;
-        try {
-            stocksApiRes = Jsoup.connect("http://old.tsetmc.com/tsev2/data/MarketWatchInit.aspx?h=0&r=0")
-                    .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
-                    .ignoreContentType(true)
-                    .get()
-                    .text();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        String stocksApiRes = Utils.fetch(Utils.getFindStocksURL());
 
         // parsing the result:
-        String[] stockList = stocksApiRes.split("@")[2].split(";");
+        String[] stockListStr = stocksApiRes.split("@")[2].split(";");
 
         // defining the Stock list:
-        ArrayList<Stock> stocks = new ArrayList<Stock>();
+        ArrayList<Stock> stockList = new ArrayList<>();
 
         // iterating though string array and get every stock object
-        for(String item : stockList) {
+        for(String item : stockListStr) {
 
             Stock stock = new Stock();
             // filling stock fields:
@@ -57,10 +49,10 @@ public class StocksCrawler {
             stock.setMax_allowed_price(parseFloat(item.split(",")[19]));
             stock.setMin_allowed_price(parseFloat(item.split(",")[20]));
             stock.setStock_count(parseLong(item.split(",")[21]));
-            stocks.add(stock);
+            stockList.add(stock);
         }
 
         // returning the stock list:
-        return stocks;
+        return stockList;
     }
 }

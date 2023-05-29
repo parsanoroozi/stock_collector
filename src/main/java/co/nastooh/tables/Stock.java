@@ -2,7 +2,10 @@ package co.nastooh.tables;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="stock")
@@ -26,6 +29,20 @@ public class Stock {
     private float max_allowed_price;
     private float min_allowed_price;
     private long stock_count;
+    @OneToMany(mappedBy = "stock")
+    private List<Daily> days = new ArrayList<>();
+
+    public List<Daily> getDays() {
+        return days;
+    }
+
+    public void setDays(List<Daily> days) {
+        this.days = days;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public void setId(String id) {
         this.id = id;

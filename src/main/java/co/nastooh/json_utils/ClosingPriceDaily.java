@@ -1,23 +1,56 @@
 package co.nastooh.json_utils;
 
+import com.google.gson.Gson;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 public class ClosingPriceDaily {
-    private int priceChange;
-    private int priceMin;
-    private int priceMax;
-    private int priceYesterday;
-    private int priceFirst;
+    private float priceChange;
+    private float priceMin;
+    private float priceMax;
+    private float priceYesterday;
+    private float priceFirst;
     private boolean last;
     private int id;
     private String insCode;
     private int dEven;
     private int hEven;
-    private int pClosing;
+    private float pClosing;
     private boolean iClose;
     private boolean yClose;
     private int pDrCotVal;
     private int zTotTran;
     private int qTotTran5J;
     private long qTotCap;
+
+    public float getPriceMin() {
+        return priceMin;
+    }
+
+    public float getPriceMax() {
+        return priceMax;
+    }
+
+    public float getPriceYesterday() {
+        return priceYesterday;
+    }
+
+    public float getPriceFirst() {
+        return priceFirst;
+    }
+
+    public float getpClosing() {
+        return pClosing;
+    }
+
+    public int getqTotTran5J() {
+        return qTotTran5J;
+    }
+
+    public long getqTotCap() {
+        return qTotCap;
+    }
 
     public int getdEven() {
         return dEven;
@@ -40,5 +73,15 @@ public class ClosingPriceDaily {
                 ", qTotTran5J=" + qTotTran5J +
                 ", qTotCap=" + qTotCap +
                 '}';
+    }
+
+    public static ClosingPriceDaily[] getTheList(String findDays){
+
+        // parsing the String result to an array of JSON:
+        JSONObject findDaysJson = new JSONObject(findDays);
+        String closingPriceString = findDaysJson.get("closingPriceDaily").toString();
+        Gson gson = new Gson();
+
+        return gson.fromJson(closingPriceString, ClosingPriceDaily[].class);
     }
 }

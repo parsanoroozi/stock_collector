@@ -11,27 +11,27 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 import java.util.ArrayList;
 
-public class InsertOrUpdateStocks {
-    public static void run(ArrayList<Stock> stockList){
+public class InsertOrUpdateDailies {
+
+    public static void run(ArrayList<Daily> dailyList){
 
         // connecting to the database:
         Configuration con = new Configuration().configure()
-                .addAnnotatedClass(Stock.class)
                 .addAnnotatedClass(Daily.class)
+                .addAnnotatedClass(Stock.class)
                 .addAnnotatedClass(Trade.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
         SessionFactory sf = con.buildSessionFactory(reg);
-        Session session = sf.openSession();
-        session.beginTransaction();
 
-        // inserting or updating stocks:
-        for (Stock stock : stockList){
-            session.saveOrUpdate(stock);
+        // inserting or updating dailies:
+        for (Daily daily : dailyList){
+            Session session = sf.openSession();
+            session.beginTransaction();
+            session.saveOrUpdate(daily);
+            session.getTransaction().commit();
+            session.close();
         }
 
-        session.getTransaction().commit();
-        session.close();
-
-        System.out.println("Stocks has been inserted/updated successfully");
+        System.out.println("Dailies of "+dailyList.get(0).getStock().getId()+" has been inserted/updated successfully");
     }
 }
