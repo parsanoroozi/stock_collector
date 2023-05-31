@@ -12,7 +12,7 @@ public class UtilsTable {
     private boolean history_finished;
     private Long last_daily_update;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

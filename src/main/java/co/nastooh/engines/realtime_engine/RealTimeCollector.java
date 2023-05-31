@@ -3,7 +3,7 @@ package co.nastooh.engines.realtime_engine;
 
 import co.nastooh.crawlers.StocksCrawler;
 import co.nastooh.tables.Stock;
-import co.nastooh.transactions.InsertOrUpdateStocks;
+import co.nastooh.transactions.StockTransaction;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class RealTimeCollector {
         ArrayList<Stock> stockList = StocksCrawler.collectStocks();
 
         //  inserting stocks into the database or updating them if they already exist:
-        InsertOrUpdateStocks.run(stockList);
+        StockTransaction.run(stockList);
 
         // updating detailed daily:
         DailyUpdate.run(stockList);

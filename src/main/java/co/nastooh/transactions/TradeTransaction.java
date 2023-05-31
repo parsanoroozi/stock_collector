@@ -11,7 +11,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 import java.util.ArrayList;
 
-public class InsertOrUpdateTrades {
+public class TradeTransaction {
 
     public static void run(ArrayList<Trade> tradeList){
 

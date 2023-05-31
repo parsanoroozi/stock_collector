@@ -11,7 +11,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
 
 import java.util.ArrayList;
 
-public class InsertOrUpdateStocks {
+public class StockTransaction {
     public static void run(ArrayList<Stock> stockList){
 
         // connecting to the database:

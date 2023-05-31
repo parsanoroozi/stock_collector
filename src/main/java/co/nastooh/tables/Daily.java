@@ -8,7 +8,8 @@ import java.util.List;
 @Table(name="daily")
 public class Daily {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private float min_price;
     private float max_price;
     private float yesterday_price;
@@ -31,12 +32,8 @@ public class Daily {
         this.trades = trades;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public float getMin_price() {

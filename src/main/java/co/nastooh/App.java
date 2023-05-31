@@ -4,7 +4,7 @@ package co.nastooh;
 import co.nastooh.crawlers.Utils;
 import co.nastooh.engines.historical_engine.HistoryCollector;
 import co.nastooh.engines.realtime_engine.RealTimeCollector;
-import co.nastooh.transactions.GetUtils;
+import co.nastooh.transactions.UtilsTransaction;
 
 
 public class App
@@ -15,7 +15,7 @@ public class App
         Utils.setDriver();
 
         // is history process over:
-        boolean isHistoryOver = GetUtils.isHistoryOver();
+        boolean isHistoryOver = UtilsTransaction.isHistoryOver();
 
         if(isHistoryOver)
         {

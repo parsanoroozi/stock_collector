@@ -24,7 +24,6 @@ public class DailiesCrawler {
 
             Daily daily = new Daily();
             // filling daily fields:
-            daily.setId(stock.getId()+item.getdEven());
             daily.setMin_price(item.getPriceMin());
             daily.setMax_price(item.getPriceMax());
             daily.setYesterday_price(item.getPriceYesterday());

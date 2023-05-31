@@ -7,9 +7,9 @@ import co.nastooh.engines.realtime_engine.RealTimeCollector;
 import co.nastooh.tables.Daily;
 import co.nastooh.tables.Stock;
 import co.nastooh.tables.Trade;
-import co.nastooh.transactions.InsertOrUpdateDailies;
-import co.nastooh.transactions.InsertOrUpdateStocks;
-import co.nastooh.transactions.InsertOrUpdateTrades;
+import co.nastooh.transactions.DailyTransaction;
+import co.nastooh.transactions.StockTransaction;
+import co.nastooh.transactions.TradeTransaction;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class HistoryCollector {
         // getting stocks
         ArrayList<Stock> stockList = StocksCrawler.collectStocks();
         //  inserting stocks into the database or updating them if they already exist:
-        InsertOrUpdateStocks.run(stockList);
+        StockTransaction.run(stockList);
 
         // initiating the lastUpdate time for interrupting every 2 minutes and update stocks
         Long lastUpdateTime = 0L;
@@ -30,15 +30,15 @@ public class HistoryCollector {
         int stocksNumber = 0;
 
         // iterating over stocks:
-        for (Stock stock : stockList){
+        for (int i = GetStockIndex.run(stockList) ; i < stockList.size() ; i++){
 
             StocksRecordsCount = 0;
             stocksNumber +=1;
 
             // fetching a stocks trading day:
-            ArrayList<Daily> dailyList = DailiesCrawler.collectDailies(stock);
+            ArrayList<Daily> dailyList = DailiesCrawler.collectDailies(stockList.get(i));
             //  inserting a stocks trading days into the database:
-            InsertOrUpdateDailies.run(dailyList);
+            DailyTransaction.run(dailyList);
 
             System.out.println("number of days : " + dailyList.size());
             for (Daily daily : dailyList){
@@ -52,14 +52,14 @@ public class HistoryCollector {
                 // fetching a days trades:
                 ArrayList<Trade> tradeList = TradesCrawler.collectTrades(daily);
                 // inserting the trades of a date into the database:
-                InsertOrUpdateTrades.run(tradeList);
+                TradeTransaction.run(tradeList);
 
                 // updating counters:
                 StocksRecordsCount += tradeList.size();
                 TotalRecordsCount += tradeList.size();
             }
             System.out.println("Stock number: " + stocksNumber);
-            System.out.println("change stock: " + stock.getId());
+            System.out.println("change stock: " + stockList.get(i).getId());
             System.out.println("StocksRecordsCount:  " + StocksRecordsCount);
             System.out.println("TOTAL RECORD COUNT  ----->  " + TotalRecordsCount);
             System.out.println();

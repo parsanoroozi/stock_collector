@@ -5,10 +5,9 @@ import co.nastooh.crawlers.TradesCrawler;
 import co.nastooh.tables.Daily;
 import co.nastooh.tables.Stock;
 import co.nastooh.tables.Trade;
-import co.nastooh.transactions.GetDaily;
-import co.nastooh.transactions.GetUtils;
-import co.nastooh.transactions.InsertOrUpdateDailies;
-import co.nastooh.transactions.InsertOrUpdateTrades;
+import co.nastooh.transactions.UtilsTransaction;
+import co.nastooh.transactions.DailyTransaction;
+import co.nastooh.transactions.TradeTransaction;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,7 +20,10 @@ public class DailyUpdate {
         long currentTime = Instant.now().getEpochSecond();
 
         // if it has been more than one day since last update:
-        if(currentTime - GetUtils.lastDetailedUpdate() > 86400){
+        if(currentTime - UtilsTransaction.lastDetailedUpdate() > 86400){
+
+            // modify last update time:
+            UtilsTransaction.saveNewUpdateDate(currentTime);
 
             for (Stock stock : stockList){
 
@@ -41,13 +43,13 @@ public class DailyUpdate {
         for (Daily daily : dailyList){
 
             // checking if the daily exist:
-            if (GetDaily.checkIfExists(daily)){
+            if (DailyTransaction.checkIfExists(daily)){
                 // we have reached to a repeated point, so we quit:
                 break;
 
             }else{
                 // inserting daily:
-                InsertOrUpdateDailies.insertOneDaily(daily);
+                DailyTransaction.insertOneDaily(daily);
 
                 // skip if the day has no trades:
                 if (daily.getTransaction_volume() == 0) continue;
@@ -55,7 +57,7 @@ public class DailyUpdate {
                 // fetching a days trades:
                 ArrayList<Trade> tradeList = TradesCrawler.collectTrades(daily);
                 // inserting the trades of a date into the database:
-                InsertOrUpdateTrades.run(tradeList);
+                TradeTransaction.run(tradeList);
             }
         }
     }
