@@ -31,6 +31,7 @@ public class InsertOrUpdateStocks {
 
         session.getTransaction().commit();
         session.close();
+        sf.close();
 
         System.out.println("Stocks has been inserted/updated successfully");
     }

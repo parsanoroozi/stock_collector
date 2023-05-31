@@ -21,16 +21,20 @@ public class InsertOrUpdateTrades {
                 .addAnnotatedClass(Daily.class)
                 .addAnnotatedClass(Stock.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-        SessionFactory sf = con.buildSessionFactory(reg);
+
 
         // inserting or updating trades:
         for (Trade trade : tradeList){
+            SessionFactory sf = con.buildSessionFactory(reg);
             Session session = sf.openSession();
             session.beginTransaction();
             session.saveOrUpdate(trade);
             session.getTransaction().commit();
             session.close();
+            sf.close();
         }
+
+
 
 
         if(tradeList.size()>0){

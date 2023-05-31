@@ -19,6 +19,9 @@ public class RealTimeCollector {
 
         //  inserting stocks into the database or updating them if they already exist:
         InsertOrUpdateStocks.run(stockList);
+
+        // updating detailed daily:
+        DailyUpdate.run(stockList);
     }
 
     public static void run(){

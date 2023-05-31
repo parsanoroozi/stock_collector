@@ -48,6 +48,7 @@ public class GetUtils {
         // get the utils instance:
         UtilsTable utilsInstance = (UtilsTable) session.get(UtilsTable.class,1);
         session.close();
+        sf.close();
 
         return utilsInstance.getLast_daily_update();
     }
