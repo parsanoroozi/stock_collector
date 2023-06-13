@@ -7,6 +7,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Utils {
 
@@ -19,7 +21,17 @@ public class Utils {
     public static void setDriver() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
+        System.setProperty("webdriver.chrome.silentOutput","true");
         Utils.driver = new ChromeDriver(options);
+    }
+
+    public static void turnOffLogs(){
+        // turning off hibernate logs:
+        Logger hibernateLogger = Logger.getLogger("org.hibernate");
+        hibernateLogger.setLevel(Level.OFF);
+        // turning off selenium logs:
+        Logger seleniumLogger = Logger.getLogger("org.seleniumhq.selenium");
+        seleniumLogger.setLevel(Level.OFF);
     }
 
     public static String getFindStocksURL() {
@@ -49,14 +61,14 @@ public class Utils {
         // setting a new Port number for every request:
         String portNumber = Integer.toString(rand.nextInt(1024));
         System.setProperty("http.proxyport", portNumber);
-
         // fetching the url
         driver.get(url);
         String response = Jsoup.parse(driver.getPageSource()).text();
 
-        // if the server returns 503, we give it a 5s rest and then we request again
-        if(response.startsWith("503")){
-            while (response.startsWith("503")){
+        // if the server returns 50, we give it a 5s rest and then we request again
+        if(response.startsWith("50")){
+            while (response.startsWith("50")){
+
                 try {
                     TimeUnit.SECONDS.sleep(5);
                     driver.get(url);
@@ -67,11 +79,5 @@ public class Utils {
             }
         }
         return response;
-    }
-
-    public static WebDriver initChromeDriver(){
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        return new ChromeDriver(options);
     }
 }

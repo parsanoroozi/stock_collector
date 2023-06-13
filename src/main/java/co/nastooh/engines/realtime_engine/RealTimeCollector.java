@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class RealTimeCollector {
 
-    private static void update(){
+    public static void update(){
 
         // fetching stocks:
         ArrayList<Stock> stockList = StocksCrawler.collectStocks();
@@ -39,11 +39,13 @@ public class RealTimeCollector {
         Long currentTime = Instant.now().getEpochSecond();
 
         if (currentTime - lastUpdateTime > 120){
+
             // update
             RealTimeCollector.update();
 
             return currentTime;
         }
+
         return lastUpdateTime;
     }
 }

@@ -1,8 +1,11 @@
 package co.nastooh.transactions;
 
+import co.nastooh.crawlers.StocksCrawler;
+import co.nastooh.engines.realtime_engine.RealTimeCollector;
 import co.nastooh.tables.Daily;
 import co.nastooh.tables.Stock;
 import co.nastooh.tables.Trade;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -34,5 +37,39 @@ public class StockTransaction {
         sf.close();
 
         System.out.println("Stocks has been inserted/updated successfully");
+    }
+
+    public static ArrayList<Stock> getStockList(){
+
+        // connecting to the database:
+        Configuration con = new Configuration().configure()
+                .addAnnotatedClass(Stock.class)
+                .addAnnotatedClass(Daily.class)
+                .addAnnotatedClass(Trade.class);
+        ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
+        SessionFactory sf = con.buildSessionFactory(reg);
+        Session session = sf.openSession();
+        session.beginTransaction();
+
+        // getting stock list:
+        Query query = session.createQuery("from Stock order by id ASC");
+        ArrayList<Stock> stockList = new ArrayList<Stock>(query.list());
+
+
+        // check if we have fetched stocks for the first time:
+        if(stockList.size() == 0){
+            // fetching stocks:
+            stockList = StocksCrawler.collectStocks();
+            //  inserting stocks into the database or updating them if they already exist:
+            StockTransaction.run(stockList);
+            // getting stocks:
+            stockList = new ArrayList<Stock>(query.list());
+        }
+
+        session.getTransaction().commit();
+        session.close();
+        sf.close();
+
+        return stockList;
     }
 }

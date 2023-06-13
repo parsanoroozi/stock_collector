@@ -5,6 +5,7 @@ import co.nastooh.tables.Daily;
 import co.nastooh.tables.Trade;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TradesCrawler {
 
@@ -22,7 +23,6 @@ public class TradesCrawler {
 
         // iterating though json array and get every trade object
         for(TradeHistory item : dayTrades) {
-
             Trade trade = new Trade();
             // filling trade fields:
             trade.setPrice(item.getpTran());

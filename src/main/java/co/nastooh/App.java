@@ -14,6 +14,9 @@ public class App
         // setting the chrome driver for fetching data
         Utils.setDriver();
 
+        // turning off hibernate and selenium logs:
+        Utils.turnOffLogs();
+
         // is history process over:
         boolean isHistoryOver = UtilsTransaction.isHistoryOver();
 
