@@ -19,7 +19,7 @@ public class ClosingPriceDaily {
     private float pClosing;
     private boolean iClose;
     private boolean yClose;
-    private int pDrCotVal;
+    private float pDrCotVal;
     private long zTotTran;
     private long qTotTran5J;
     private long qTotCap;

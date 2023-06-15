@@ -135,7 +135,6 @@ public class TradeHistory {
     }
 
     public static TradeHistory[] getTheList(String findTrades){
-
         // parsing the String result to an array of JSON:
         JSONObject findDaysJson = new JSONObject(findTrades);
         String closingPriceString = findDaysJson.get("tradeHistory").toString();

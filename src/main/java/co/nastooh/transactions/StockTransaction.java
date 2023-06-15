@@ -23,9 +23,24 @@ public class StockTransaction {
                 .addAnnotatedClass(Daily.class)
                 .addAnnotatedClass(Trade.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-        SessionFactory sf = con.buildSessionFactory(reg);
-        Session session = sf.openSession();
-        session.beginTransaction();
+        // defining exception flag and session variables:
+        boolean DBConnectionException = true;
+        SessionFactory sf = null;
+        Session session = null;
+        // while there is a "too many Connections Exception":
+        while (DBConnectionException){
+            try{
+                // opening a new session:
+                sf = con.buildSessionFactory(reg);
+                session = sf.openSession();
+                session.beginTransaction();
+                DBConnectionException = false;
+            }catch (Exception e){
+                System.out.println("too many Connections exception");
+                session.close();
+                sf.close();
+            }
+        }
 
         // inserting or updating stocks:
         for (Stock stock : stockList){
@@ -47,14 +62,28 @@ public class StockTransaction {
                 .addAnnotatedClass(Daily.class)
                 .addAnnotatedClass(Trade.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-        SessionFactory sf = con.buildSessionFactory(reg);
-        Session session = sf.openSession();
-        session.beginTransaction();
+        // defining exception flag and session variables:
+        boolean DBConnectionException = true;
+        SessionFactory sf = null;
+        Session session = null;
+        // while there is a "too many Connections Exception":
+        while (DBConnectionException){
+            try{
+                // opening a new session:
+                sf = con.buildSessionFactory(reg);
+                session = sf.openSession();
+                session.beginTransaction();
+                DBConnectionException = false;
+            }catch (Exception e){
+                System.out.println("too many Connections exception");
+                session.close();
+                sf.close();
+            }
+        }
 
         // getting stock list:
         Query query = session.createQuery("from Stock order by id ASC");
         ArrayList<Stock> stockList = new ArrayList<Stock>(query.list());
-
 
         // check if we have fetched stocks for the first time:
         if(stockList.size() == 0){

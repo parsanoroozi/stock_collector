@@ -34,7 +34,10 @@ public class HistoryCollector {
             // go through days and save trades:
             for (int j = GetIndex.daily(dailyList) ; j < dailyList.size() ; j++){
                 // daily report log:
-                System.out.println("day: "+(j+1)+"/"+dailyList.size()+", stock: "+(i+1)+"/"+stockList.size());
+                System.out.println("day: "+(j+1) +"/"+dailyList.size()
+                        +" date: " + dailyList.get(j).getDate()
+                        +", stock: "+(i+1)+"/"+stockList.size()
+                        +" id: " + stockList.get(i).getId());
 
                 // updating the stocks if it has been 2 minutes since the last update:
                 lastUpdateTime = RealTimeCollector.updateEvery2Min(lastUpdateTime);
@@ -44,6 +47,9 @@ public class HistoryCollector {
 
                 // fetching a days trades:
                 ArrayList<Trade> tradeList = TradesCrawler.collectTrades(dailyList.get(j));
+
+                // skip if the tradeList length is 0:
+                if (tradeList.size() == 0) continue;
 
                 // inserting the trades of a date into the database:
                 TradeTransaction.run(tradeList);
