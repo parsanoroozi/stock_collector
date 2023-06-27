@@ -56,7 +56,7 @@ public class TradeTransaction {
         return lastTrade;
     }
 
-    public static void run(ArrayList<Trade> tradeList){
+    public static void insert(ArrayList<Trade> tradeList){
         // connecting to the database:
         Configuration con = new Configuration().configure()
                 .addAnnotatedClass(Trade.class)

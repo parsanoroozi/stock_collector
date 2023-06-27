@@ -90,7 +90,7 @@ public class DailyTransaction {
         return lastDaily;
     }
 
-    public static void run(ArrayList<Daily> dailyList){
+    public static void insert(ArrayList<Daily> dailyList){
 
         // connecting to the database:
         Configuration con = new Configuration().configure()

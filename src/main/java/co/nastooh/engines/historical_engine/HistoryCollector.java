@@ -29,7 +29,7 @@ public class HistoryCollector {
             // fetching a stocks trading day:
             ArrayList<Daily> dailyList = DailiesCrawler.collectDailies(stockList.get(i));
             //  inserting a stocks trading days into the database:
-            DailyTransaction.run(dailyList);
+            DailyTransaction.insert(dailyList);
 
             // go through days and save trades:
             for (int j = GetIndex.daily(dailyList) ; j < dailyList.size() ; j++){
@@ -52,7 +52,7 @@ public class HistoryCollector {
                 if (tradeList.size() == 0) continue;
 
                 // inserting the trades of a date into the database:
-                TradeTransaction.run(tradeList);
+                TradeTransaction.insert(tradeList);
             }
             System.out.println();
         }

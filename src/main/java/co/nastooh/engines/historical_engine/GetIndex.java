@@ -18,10 +18,12 @@ public class GetIndex {
 
         // return the index of stock we're looking for:
         int index = 0;
-        for(int i = 0; i < stockList.size(); i++){
-            if (Objects.equals(stockList.get(i).getId(), lastDaily.getStock().getId())){
-                index = i;
-                break;
+        if (lastDaily != null){
+            for(int i = 0; i < stockList.size(); i++){
+                if (Objects.equals(stockList.get(i).getId(), lastDaily.getStock().getId())){
+                    index = i;
+                    break;
+                }
             }
         }
 
@@ -36,10 +38,12 @@ public class GetIndex {
 
         // return the index of daily we're looking for:
         int index = 0;
-        for(int i = 0; i < dailyList.size(); i++){
-            if (Objects.equals(dailyList.get(i).getDate(), lastTrade.getDaily().getDate())){
-                index = i;
-                break;
+        if (lastTrade != null){
+            for(int i = 0; i < dailyList.size(); i++){
+                if (Objects.equals(dailyList.get(i).getDate(), lastTrade.getDaily().getDate())){
+                    index = i;
+                    break;
+                }
             }
         }
 

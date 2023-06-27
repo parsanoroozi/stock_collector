@@ -20,7 +20,6 @@ public class TradesCrawler {
         if (tradesApiRes.length() == 0) return new ArrayList<>();
 
         // parsing the string result into a JSON array:
-        System.out.println("trades api result: " + tradesApiRes.substring(0,19));
         TradeHistory[] dayTrades = TradeHistory.getTheList(tradesApiRes);
 
         // defining the trade list:

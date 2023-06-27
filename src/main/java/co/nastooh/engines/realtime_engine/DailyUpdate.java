@@ -57,7 +57,7 @@ public class DailyUpdate {
                 // fetching a days trades:
                 ArrayList<Trade> tradeList = TradesCrawler.collectTrades(daily);
                 // inserting the trades of a date into the database:
-                TradeTransaction.run(tradeList);
+                TradeTransaction.insert(tradeList);
             }
         }
     }

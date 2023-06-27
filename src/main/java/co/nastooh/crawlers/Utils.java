@@ -68,7 +68,7 @@ public class Utils {
                 response = innerFetch(url);
                 if(Objects.equals(response, "{\"tradeHistory\":[]}") || response.startsWith("JSON")){
                     EmptyTimes++;
-                    if(EmptyTimes==10) ExceptionOccurred = false;
+                    if(EmptyTimes==5) ExceptionOccurred = false;
                     System.out.println(EmptyTimes + " tradeHistory was empty: " + response.substring(0,19));
                     driver.quit();
                     setDriver();
