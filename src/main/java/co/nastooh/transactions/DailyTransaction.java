@@ -23,8 +23,24 @@ public class DailyTransaction {
         // connecting to the database:
         Configuration con = new Configuration().configure().addAnnotatedClass(UtilsTable.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-        SessionFactory sf = con.buildSessionFactory(reg);
-        Session session = sf.openSession();
+        // defining exception flag and session variables:
+        boolean DBConnectionException = true;
+        SessionFactory sf = null;
+        Session session = null;
+        // while there is a "too many Connections Exception":
+        while (DBConnectionException){
+            try{
+                // opening a new session:
+                sf = con.buildSessionFactory(reg);
+                session = sf.openSession();
+                session.beginTransaction();
+                DBConnectionException = false;
+            }catch (Exception e){
+                System.out.println("too many Connections exception");
+                session.close();
+                sf.close();
+            }
+        }
 
         // get daily by id if exists:
         retrievedDaily = (Daily) session.get(Daily.class, daily.getId());
@@ -38,11 +54,29 @@ public class DailyTransaction {
     public static Daily getLastDailyAdded(){
 
         // connecting to the database:
-        Configuration con = new Configuration().configure().addAnnotatedClass(UtilsTable.class);
+        Configuration con = new Configuration().configure()
+                .addAnnotatedClass(Stock.class)
+                .addAnnotatedClass(Daily.class)
+                .addAnnotatedClass(Trade.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
-        SessionFactory sf = con.buildSessionFactory(reg);
-        Session session = sf.openSession();
-        session.beginTransaction();
+        // defining exception flag and session variables:
+        boolean DBConnectionException = true;
+        SessionFactory sf = null;
+        Session session = null;
+        // while there is a "too many Connections Exception":
+        while (DBConnectionException){
+            try{
+                // opening a new session:
+                sf = con.buildSessionFactory(reg);
+                session = sf.openSession();
+                session.beginTransaction();
+                DBConnectionException = false;
+            }catch (Exception e){
+                System.out.println("too many Connections exception");
+                session.close();
+                sf.close();
+            }
+        }
 
         // getting the last added query
         Query query = session.createQuery("from Daily order by id DESC");
@@ -56,7 +90,7 @@ public class DailyTransaction {
         return lastDaily;
     }
 
-    public static void run(ArrayList<Daily> dailyList){
+    public static void insert(ArrayList<Daily> dailyList){
 
         // connecting to the database:
         Configuration con = new Configuration().configure()
@@ -65,18 +99,31 @@ public class DailyTransaction {
                 .addAnnotatedClass(Trade.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
 
-
+        // defining exception flag and session variables:
+        boolean DBConnectionException = true;
+        SessionFactory sf = null;
+        Session session = null;
+        // while there is a "too many Connections Exception":
+        while (DBConnectionException){
+            try{
+                // opening a new session:
+                sf = con.buildSessionFactory(reg);
+                session = sf.openSession();
+                session.beginTransaction();
+                DBConnectionException = false;
+            }catch (Exception e){
+                System.out.println("too many Connections exception");
+                session.close();
+                sf.close();
+            }
+        }
         // inserting or updating dailies:
         for (Daily daily : dailyList){
-            SessionFactory sf = con.buildSessionFactory(reg);
-            Session session = sf.openSession();
-            session.beginTransaction();
             session.saveOrUpdate(daily);
-            session.getTransaction().commit();
-            session.close();
-            sf.close();
         }
-
+        session.getTransaction().commit();
+        session.close();
+        sf.close();
 
 
         System.out.println("Dailies of "+dailyList.get(0).getStock().getId()+" has been inserted/updated successfully");
@@ -91,11 +138,24 @@ public class DailyTransaction {
                 .addAnnotatedClass(Trade.class);
         ServiceRegistry reg = new ServiceRegistryBuilder().applySettings(con.getProperties()).buildServiceRegistry();
 
-
-        // creating a session:
-        SessionFactory sf = con.buildSessionFactory(reg);
-        Session session = sf.openSession();
-        session.beginTransaction();
+        // defining exception flag and session variables:
+        boolean DBConnectionException = true;
+        SessionFactory sf = null;
+        Session session = null;
+        // while there is a "too many Connections Exception":
+        while (DBConnectionException){
+            try{
+                // opening a new session:
+                sf = con.buildSessionFactory(reg);
+                session = sf.openSession();
+                session.beginTransaction();
+                DBConnectionException = false;
+            }catch (Exception e){
+                System.out.println("too many Connections exception");
+                session.close();
+                sf.close();
+            }
+        }
         // inserting daily:
         session.saveOrUpdate(daily);
         // disconnecting:

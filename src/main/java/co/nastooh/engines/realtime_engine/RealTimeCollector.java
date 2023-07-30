@@ -12,13 +12,13 @@ import java.util.TimerTask;
 
 public class RealTimeCollector {
 
-    private static void update(){
+    public static void update(){
 
         // fetching stocks:
         ArrayList<Stock> stockList = StocksCrawler.collectStocks();
 
         //  inserting stocks into the database or updating them if they already exist:
-        StockTransaction.run(stockList);
+        StockTransaction.insert(stockList);
 
         // updating detailed daily:
         DailyUpdate.run(stockList);
@@ -41,7 +41,6 @@ public class RealTimeCollector {
         if (currentTime - lastUpdateTime > 120){
             // update
             RealTimeCollector.update();
-
             return currentTime;
         }
         return lastUpdateTime;

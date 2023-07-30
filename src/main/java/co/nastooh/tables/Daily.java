@@ -130,7 +130,6 @@ public class Daily {
                 ", transaction_volume=" + transaction_volume +
                 ", transaction_value=" + transaction_value +
                 ", stock=" + stock +
-                ", trades=" + trades +
                 '}';
     }
 }

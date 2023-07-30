@@ -19,9 +19,9 @@ public class ClosingPriceDaily {
     private float pClosing;
     private boolean iClose;
     private boolean yClose;
-    private int pDrCotVal;
-    private int zTotTran;
-    private int qTotTran5J;
+    private float pDrCotVal;
+    private long zTotTran;
+    private long qTotTran5J;
     private long qTotCap;
 
     public float getPriceMin() {
@@ -44,7 +44,7 @@ public class ClosingPriceDaily {
         return pClosing;
     }
 
-    public int getqTotTran5J() {
+    public long getqTotTran5J() {
         return qTotTran5J;
     }
 
@@ -56,7 +56,7 @@ public class ClosingPriceDaily {
         return dEven;
     }
 
-    public int getzTotTran() {
+    public long getzTotTran() {
         return zTotTran;
     }
 

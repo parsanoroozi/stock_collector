@@ -5,6 +5,8 @@ import co.nastooh.tables.Daily;
 import co.nastooh.tables.Trade;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class TradesCrawler {
 
@@ -14,6 +16,9 @@ public class TradesCrawler {
         String tradesDate = Integer.toString(daily.getDate());
         String tradesApiRes = Utils.fetch(Utils.getFindTradesURL(daily.getStock().getId(),tradesDate));
 
+        // return if the fetch result is empty:
+        if (tradesApiRes.length() == 0) return new ArrayList<>();
+
         // parsing the string result into a JSON array:
         TradeHistory[] dayTrades = TradeHistory.getTheList(tradesApiRes);
 
@@ -22,7 +27,6 @@ public class TradesCrawler {
 
         // iterating though json array and get every trade object
         for(TradeHistory item : dayTrades) {
-
             Trade trade = new Trade();
             // filling trade fields:
             trade.setPrice(item.getpTran());
