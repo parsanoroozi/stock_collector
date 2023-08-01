@@ -21,12 +21,12 @@ public class UtilsTransaction {
         Session session = sf.openSession();
 
         // temporary only first time adding:
-//        session.beginTransaction();
-//        UtilsTable utils = new UtilsTable();
-//        utils.setHistory_finished(false);
-//        utils.setLast_daily_update(Instant.now().getEpochSecond());
-//        session.saveOrUpdate(utils);
-//        session.getTransaction().commit();
+        session.beginTransaction();
+        UtilsTable utils = new UtilsTable();
+        utils.setHistory_finished(false);
+        utils.setLast_daily_update(Instant.now().getEpochSecond());
+        session.saveOrUpdate(utils);
+        session.getTransaction().commit();
         // temporary syntax for creating the table of utils...
 
 
